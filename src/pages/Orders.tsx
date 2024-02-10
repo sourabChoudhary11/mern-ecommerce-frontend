@@ -1,9 +1,8 @@
-import { ReactElement, useState, useEffect } from "react"
-import { Column } from "react-table"
-import TableHOC from "../components/admin/TableHOC"
-import { Link } from "react-router-dom";
+import { ReactElement, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { UserResponse } from "../types/apiTypes";
+import { Link } from "react-router-dom";
+import { Column } from "react-table";
+import TableHOC from "../components/admin/TableHOC";
 import { useUserOrdersQuery } from "../redux/api/orderApi";
 import { RootState } from "../redux/store";
 

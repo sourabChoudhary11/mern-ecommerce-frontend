@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -6,11 +5,8 @@ import AdminSidebar from "../../../components/admin/AdminSidebar";
 import { useDeleteOrderMutation, useGetSpecificOrderQuery, useProcessOrderMutation } from "../../../redux/api/orderApi";
 import { server } from "../../../redux/store";
 import { User_Reducer_Initial_State } from "../../../types/reducerTypes";
-import { Order, OrderItem } from "../../../types/types";
+import { OrderItem } from "../../../types/types";
 import { responseToast } from "../../../utils/feature";
-import Loader from "../../../components/Loader";
-
-
 
 const TransactionManagement = () => {
   const { id } = useParams();

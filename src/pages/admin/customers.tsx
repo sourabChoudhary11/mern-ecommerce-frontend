@@ -5,10 +5,9 @@ import { Column } from "react-table";
 import AdminSidebar from "../../components/admin/AdminSidebar";
 import TableHOC from "../../components/admin/TableHOC";
 import { useDeleteUserMutation, useGetAllUsersQuery } from "../../redux/api/userApi";
-import { RootState, server } from "../../redux/store";
+import { RootState } from "../../redux/store";
 import { User } from "../../types/types";
 import { responseToast } from "../../utils/feature";
-import { FaUser } from "react-icons/fa";
 
 interface DataType {
   avatar: ReactElement;
