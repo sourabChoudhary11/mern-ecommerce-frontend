@@ -1,11 +1,16 @@
 export type User = {
-    _id: string;
+    _id?: string;
     name: string;
-    photo: string;
     dob: string;
     gender: string;
-    role: string;
     email: string;
+    password: string;
+    role?: string;
+}
+
+export type LoginUser = {
+    email: string;
+    password: string;
 }
 
 export type Product = {

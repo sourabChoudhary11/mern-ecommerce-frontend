@@ -1,39 +1,31 @@
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useState } from "react"
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
-import {FcGoogle} from 'react-icons/fc'
-import { auth } from "../firebase";
+import { Link } from "react-router-dom";
 import { useLoginMutation } from "../redux/api/userApi";
-import {FetchBaseQueryError} from "@reduxjs/toolkit/query/react"
 import { MessageResponse } from "../types/apiTypes";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
 
-    const [gender, setGender] = useState<string>("");
-    const [date, setDate] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [passwordType, setPasswordType] = useState<string>("password");
 
     const [login] = useLoginMutation();
 
-    const loginHandler = async ()=>{
+    const loginHandler = async () => {
         try {
-            
-            const provider = new GoogleAuthProvider();
-            const {user} = await signInWithPopup(auth, provider);
-
             const response = await login({
-                name: user.displayName!,
-                email: user.email!,
-                photo:user.photoURL!,
-                gender,
-                role: "user",
-                dob: date,
-                _id: user.uid
+                email,
+                password
             });
 
-            if("data" in response) {
+            if ("data" in response) {
                 toast.success(response.data.message);
-            }else{
-                const error = response.error as  FetchBaseQueryError;
+            } else {
+                const error = response.error as FetchBaseQueryError;
                 const data = error.data as MessageResponse;
                 toast.error(data.message);
             }
@@ -43,32 +35,43 @@ const Login = () => {
         }
     };
 
-  return (
-    <div className="login">
-        <main>
-            <h1>Login</h1>
-            <div>
-                <label>Gender</label>
-                <select value={gender} onChange={(e)=>setGender(e.target.value)}>
-                    <option value="">Select Gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-            </div>
-            <div>
-                <label>Date of Birth</label>
-                <input type="date" value={date} onChange={(e)=>setDate(e.target.value)} />
-            </div>
-            <div>
-                <p>Already Signed In Once</p>
-                <button onClick={loginHandler}>
-                    <FcGoogle />
-                    <span>Sign in with Google</span>
-                </button>
-            </div>
-        </main>
-    </div>
-  )
+    const tooglePasswordType = () => {
+        setPasswordType(prev => prev === "password" ? "text" : "password");
+    }
+
+    return (
+        <div className="login-register">
+            <main>
+                <h1>Login</h1>
+                <div>
+                    <label>Email</label>
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                </div>
+                <div className="show-password">
+                    <label>Password</label>
+                    <div>
+                        <input type={passwordType} value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <span onClick={tooglePasswordType}>
+                            {
+                                passwordType === "password" ? <FaEye /> : <FaEyeSlash />
+                            }
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <button onClick={loginHandler}>
+                        Login
+                    </button>
+                </div>
+                <div className="is-account">
+                    <p>Haven't Account?</p>
+                    <Link to={"/register"}>
+                        <span>Register</span>
+                    </Link>
+                </div>
+            </main>
+        </div>
+    )
 }
 
 export default Login

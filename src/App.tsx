@@ -1,4 +1,3 @@
-import { onAuthStateChanged } from "firebase/auth"
 import { lazy, Suspense, useEffect } from "react"
 import { Toaster } from "react-hot-toast"
 import { useDispatch, useSelector } from "react-redux"
@@ -6,10 +5,10 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Header from "./components/Header"
 import Loader from "./components/Loader"
 import ProtectedRoute from "./components/ProtectedRoute"
-import { auth } from "./firebase"
 import { getUser } from "./redux/api/userApi"
 import { userExist, userNotExist } from "./redux/reducer/userReducer"
 import { RootState } from "./redux/store"
+import Register from "./pages/Register"
 
 const Home = lazy(() => import("./pages/Home"));
 const Search = lazy(() => import("./pages/Search"));
@@ -44,19 +43,17 @@ const App = () => {
   const { user, loading } = useSelector((state: RootState) => state.userReducer);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        const data = await getUser(user.uid);
-        dispatch(userExist(data?.user!));
-      } else {
-        dispatch(userNotExist());
-      }
-    })
-  }, [])
+  // useEffect(() => {
+  //     if (user) {
+  //       const data = await getUser(user.uid);
+  //       dispatch(userExist(data?.user!));
+  //     } else {
+  //       dispatch(userNotExist());
+  //     }
+  // }, [])
 
 
-  return loading ? <Loader /> : (
+  return(
     <BrowserRouter>
       <Header user={user} />
       <Suspense>
@@ -70,6 +67,7 @@ const App = () => {
             />
           }>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Route>
 
 
